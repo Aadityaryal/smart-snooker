@@ -59,12 +59,17 @@ def recommend_shot(payload: RecommendRequest):
 	probabilities = model.predict_proba(X)[0]
 	class_index = list(model.named_steps['classifier'].classes_).index(prediction)
 	confidence = float(probabilities[class_index] * 100)
+	cue_path = [
+		[payload.cue_x, payload.cue_y],
+		[payload.target_x, payload.target_y],
+	]
 	
 	return {
 		"recommended_shot": {
 			"target_ball_id": 1,
 			"pocket": "top_left",
 			"confidence": confidence,
+			"cue_path": cue_path,
 		},
 		"alternatives": [],
 	}

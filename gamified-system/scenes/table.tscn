@@ -340,3 +340,13 @@ texture = ExtResource("10")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ball_22" unique_id=1746932473]
 shape = SubResource("1")
+
+[node name="HTTPRequest" type="HTTPRequest" parent="." unique_id=1770235342]
+
+[node name="ShotOverlay" type="Line2D" parent="." unique_id=2045480107]
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=427622259]
+
+[node name="ConfidenceLabel" type="Label" parent="HUD" unique_id=308227449]
+offset_right = 40.0
+offset_bottom = 23.0
