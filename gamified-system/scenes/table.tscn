@@ -1,14 +1,14 @@
 [gd_scene format=3 uid="uid://bq5e6mdcuba4l"]
 
-[ext_resource type="Texture2D" uid="uid://chuutm185w3xq" path="res://scenes/resources/red_circle.svg" id="2"]
-[ext_resource type="Texture2D" uid="uid://crq16kq5xvm5b" path="res://scenes/resources/white_circle.svg" id="3"]
-[ext_resource type="Texture2D" uid="uid://dgmovvikqmlbf" path="res://scenes/resources/yellow_circle.svg" id="4"]
-[ext_resource type="Script" uid="uid://gxke32jhfb2w" path="res://scenes/table.gd" id="5"]
-[ext_resource type="Texture2D" uid="uid://bf3menbf5vkld" path="res://scenes/resources/green_circle.svg" id="6"]
-[ext_resource type="Texture2D" uid="uid://dl0ubk8lcrxtp" path="res://scenes/resources/brown_circle.svg" id="7"]
-[ext_resource type="Texture2D" uid="uid://dfip2kvesdr1l" path="res://scenes/resources/blue_circle.svg" id="8"]
-[ext_resource type="Texture2D" uid="uid://cjc4wl2eyjiaa" path="res://scenes/resources/pink_circle.svg" id="9"]
-[ext_resource type="Texture2D" uid="uid://dfi2ycb7nhluv" path="res://scenes/resources/black_circle.svg" id="10"]
+[ext_resource type="Texture2D" uid="uid://chuutm185w3xq" path="res://resources/red_circle.svg" id="2"]
+[ext_resource type="Texture2D" uid="uid://crq16kq5xvm5b" path="res://resources/white_circle.svg" id="3"]
+[ext_resource type="Texture2D" uid="uid://dgmovvikqmlbf" path="res://resources/yellow_circle.svg" id="4"]
+[ext_resource type="Script" uid="uid://gxke32jhfb2w" path="res://scripts/table.gd" id="5"]
+[ext_resource type="Texture2D" uid="uid://bf3menbf5vkld" path="res://resources/green_circle.svg" id="6"]
+[ext_resource type="Texture2D" uid="uid://dl0ubk8lcrxtp" path="res://resources/brown_circle.svg" id="7"]
+[ext_resource type="Texture2D" uid="uid://dfip2kvesdr1l" path="res://resources/blue_circle.svg" id="8"]
+[ext_resource type="Texture2D" uid="uid://cjc4wl2eyjiaa" path="res://resources/pink_circle.svg" id="9"]
+[ext_resource type="Texture2D" uid="uid://dfi2ycb7nhluv" path="res://resources/black_circle.svg" id="10"]
 
 [sub_resource type="RectangleShape2D" id="2"]
 size = Vector2(1280, 20)
