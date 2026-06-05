@@ -49,15 +49,25 @@ func request_recommendation(cue_position: Vector2, target_position: Vector2) -> 
 
 	_request_in_flight = true
 
-func _on_request_completed(_result: int, _response_code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
+func _on_request_completed(result: int, response_code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
 	_request_in_flight = false
 
+	if result != HTTPRequest.RESULT_SUCCESS:
+		emit_signal("recommendation_failed", "HTTP request failed with result code: " + str(result))
+		return
+
+	if response_code != 200:
+		emit_signal("recommendation_failed", "API server returned HTTP status code: " + str(response_code))
+		return
+
 	var response_text: String = body.get_string_from_utf8()
-	print(response_text)
+	if response_text.is_empty():
+		emit_signal("recommendation_failed", "API server returned an empty response")
+		return
 
 	var parsed_response: Variant = JSON.parse_string(response_text)
 	if typeof(parsed_response) != TYPE_DICTIONARY:
-		emit_signal("recommendation_failed", "Response is not a JSON object")
+		emit_signal("recommendation_failed", "Response is not a valid JSON object")
 		return
 
 	var response_data: Dictionary = parsed_response

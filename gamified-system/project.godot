@@ -26,6 +26,9 @@ window/size/viewport_height=720
 
 [physics]
 
+common/physics_ticks_per_second=60
+common/max_physics_steps_per_frame=8
+2d/run_on_separate_thread=false
 3d/physics_engine="Jolt Physics"
 
 [rendering]

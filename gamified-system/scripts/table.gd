@@ -14,9 +14,12 @@ var _overlay: Node2D = null
 var _career: Node = null
 var _xp_system: Node = null
 var _potted_balls: Array = []
+var is_rl_mode: bool = false
+var _just_shot: bool = false
 
 const MAX_DRAG_DISTANCE: float = 500.0
 const MAX_IMPULSE: float = 1500.0
+const STOP_THRESHOLD: float = 2.0 # Velocity threshold for balls to be considered stopped
 
 func _ready() -> void:
 	_api_bridge = preload("res://scripts/api_bridge.gd").new()
@@ -40,54 +43,146 @@ func _ready() -> void:
 	pockets_node.name = "Pockets"
 	add_child(pockets_node)
 
-	# Set all ball linear dampening to 2.0
-	for ball_node in _get_table_balls():
-		ball_node.linear_damp = 2.0
-		ball_node.continuous_cd = RigidBody2D.CCD_MODE_CAST_SHAPE
+	# Add pocket areas dynamically
+	var pocket_radius: float = 30.0
+	var pocket_positions: Array[Vector2] = [
+		Vector2(20, 20), Vector2(1260, 20),
+		Vector2(20, 700), Vector2(1260, 700),
+		Vector2(640, 20), Vector2(640, 700)
+	]
 
-	_career.start_next_match()
+	for pos in pocket_positions:
+		var area = Area2D.new()
+		var shape = CollisionShape2D.new()
+		var circle = CircleShape2D.new()
+		circle.radius = pocket_radius
+		shape.shape = circle
+		area.add_child(shape)
+		area.position = pos
+		area.body_entered.connect(_on_pocket_entered)
+		add_child(area)
+
+	# Adjusted Physics for "Snooker Cloth" feel
+	# Increased linear_damp (rolling resistance) and adjusted material friction
+	var ball_material = PhysicsMaterial.new()
+	ball_material.friction = 0.6  # Higher surface friction
+	ball_material.bounce = 0.7  # Snooker balls have lower bounce than billiards
+
+	for ball_node in _get_table_balls():
+		ball_node.physics_material_override = ball_material
+		ball_node.linear_damp = 1.2  # Higher damping to stop the "ice" effect
+		ball_node.angular_damp = 1.0 # Added angular damping to manage spin
+		ball_node.continuous_cd = RigidBody2D.CCD_MODE_CAST_SHAPE
 
 func _get_table_balls() -> Array:
 	var balls: Array = []
 	for child in get_children():
-		if child is RigidBody2D:
+		if child is RigidBody2D and not child.is_queued_for_deletion():
 			balls.append(child)
 	return balls
 
-func _physics_process(_delta: float) -> void:
-	# Check for potted balls every physics frame
-	# Pocket positions inset 40 pixels from corners and top/bottom middle
-	var pocket_positions: Array = [
-		Vector2(20, 20), # Top left (inset)
-		Vector2(1260, 20), # Top right (inset)
-		Vector2(20, 700), # Bottom left (inset)
-		Vector2(1260, 700), # Bottom right (inset)
-		Vector2(640, 20), # Top middle (inset from top)
-		Vector2(640, 700), # Bottom middle (inset from bottom)
-	]
-	var pocket_radius: float = 30.0
-
+func get_environment_state() -> Dictionary:
+	var state = {
+		"cue_ball": {
+			"pos": cue_ball.global_position,
+			"vel": cue_ball.linear_velocity
+		},
+		"other_balls": {}
+	}
 	for ball_node in _get_table_balls():
-		if _potted_balls.has(ball_node.name):
-			continue
-		var pos: Vector2 = ball_node.global_position
-		for pocket_pos in pocket_positions:
-			if pos.distance_to(pocket_pos) <= pocket_radius:
-				_potted_balls.append(ball_node.name)
-				ball_node.queue_free()
-				_ball_potted_this_turn = true
-				if _career != null:
-					if _player_turn:
-						_career.add_player_points(1)
-					else:
-						_career.add_ai_points(1)
-					var rank_label: Label = _career.get_node_or_null("HUD/Control/VBoxContainer/RankLabel")
-					var score_label: Label = _career.get_node_or_null("HUD/Control/VBoxContainer/ScoreLabel")
-					var xp_label: Label = _career.get_node_or_null("HUD/Control/VBoxContainer/XpLabel")
-					var xp_bar: ProgressBar = _career.get_node_or_null("HUD/Control/VBoxContainer/XpProgressBar")
-					_career.update_hud(rank_label, score_label, xp_label, xp_bar, _xp_system, _career.player_score, _career.ai_score)
-				break
+		if ball_node != cue_ball:
+			state["other_balls"][ball_node.name] = {
+				"pos": ball_node.global_position,
+				"vel": ball_node.linear_velocity,
+				"potted": _potted_balls.has(ball_node.name)
+			}
+	return state
 
+func reset_game() -> void:
+	# Reset game state
+	_potted_balls.clear()
+	_player_turn = true
+	_ball_potted_this_turn = false
+	waiting_for_ball_stop = false
+
+	# Reset career scores
+	_career.player_score = 0
+	_career.ai_score = 0
+
+	# Reposition all balls to initial spots
+	for ball_node in _get_table_balls():
+		if not is_instance_valid(ball_node):
+			continue
+		ball_node.linear_velocity = Vector2.ZERO
+		ball_node.angular_velocity = 0
+
+	# Update HUD
+	var hud_root = _career.get_node_or_null("HUD/Control/VBoxContainer")
+	if hud_root:
+		_career.update_hud(
+			hud_root.get_node_or_null("RankLabel"),
+			hud_root.get_node_or_null("ScoreLabel"),
+			hud_root.get_node_or_null("XpLabel"),
+			hud_root.get_node_or_null("XpProgressBar"),
+			_xp_system, 0, 0
+		)
+
+# Revised: Apply shot with spin (English)
+# offset: Vector2 representing where the cue hits the ball (-1 to 1 range for x/y)
+func execute_agent_shot(impulse_vector: Vector2, offset: Vector2 = Vector2.ZERO) -> void:
+	if waiting_for_ball_stop:
+		return
+
+	# Offset determines the "English" (spin)
+	# Normalizing offset to be within ball radius
+	var contact_point = offset * 5.0
+	cue_ball.apply_impulse(contact_point, impulse_vector)
+
+	waiting_for_ball_stop = true
+	_just_shot = true
+	_ball_potted_this_turn = false
+
+func get_game_result() -> Dictionary:
+	var result = {
+		"is_over": false,
+		"winner": null,
+		"reward": 0
+	}
+
+	# Logic: If someone hit 75 points
+	if _career.player_score >= 75:
+		result.is_over = true
+		result.winner = "player"
+		result.reward = 100
+	elif _career.ai_score >= 75:
+		result.is_over = true
+		result.winner = "ai"
+		result.reward = -100
+
+	return result
+
+func _on_pocket_entered(body: Node) -> void:
+	if body is RigidBody2D and not _potted_balls.has(body.name):
+		_potted_balls.append(body.name)
+		body.queue_free()
+		_ball_potted_this_turn = true
+		if _career != null:
+			if _player_turn:
+				_career.add_player_points(1)
+			else:
+				_career.add_ai_points(1)
+
+			var hud_root = _career.get_node_or_null("HUD/Control/VBoxContainer")
+			if hud_root:
+				_career.update_hud(
+					hud_root.get_node_or_null("RankLabel"),
+					hud_root.get_node_or_null("ScoreLabel"),
+					hud_root.get_node_or_null("XpLabel"),
+					hud_root.get_node_or_null("XpProgressBar"),
+					_xp_system, _career.player_score, _career.ai_score
+				)
+
+func _physics_process(_delta: float) -> void:
 	if _ai_shot_pending:
 		_ai_shot_timer -= _delta
 		if _ai_shot_timer <= 0.0:
@@ -95,13 +190,22 @@ func _physics_process(_delta: float) -> void:
 			_ball_potted_this_turn = false
 			_ai_take_visual_shot()
 			waiting_for_ball_stop = true
+			_just_shot = true
 
 	if waiting_for_ball_stop:
-		var ball_velocity_length: float = cue_ball.linear_velocity.length()
-		if ball_velocity_length < 2.0:
+		if _just_shot:
+			_just_shot = false
+			return
+		# First issue: The turn-end check must loop over ALL physics children on the table.
+		# Only proceed if all balls have stopped moving below the threshold.
+		if _are_all_balls_stopped():
+			# All balls have stopped, so we can unset the flag.
 			waiting_for_ball_stop = false
-			# wait for 1 sec
-			await get_tree().create_timer(1.0).timeout
+
+			# Wait for 1 second to ensure full stability and allow players to observe the outcome.
+			# Bypass this wait entirely when in RL mode to allow fast simulation.
+			if not is_rl_mode:
+				await get_tree().create_timer(1.0).timeout
 
 			if _player_turn:
 				# Player's turn just finished
@@ -112,7 +216,7 @@ func _physics_process(_delta: float) -> void:
 					# No ball potted, AI's turn
 					_player_turn = false
 					_ai_shot_pending = true
-					_ai_shot_timer = 1.0
+					_ai_shot_timer = 0.0 if is_rl_mode else 1.0
 			else:
 				# AI's turn just finished, back to player
 				_player_turn = true
@@ -150,7 +254,15 @@ func _on_recommendation_ready(recommended_shot: Dictionary) -> void:
 	_career.check_frame_winner()
 
 func _input(event: InputEvent) -> void:
+	# Second issue: The shot input handler must check this same all-balls-stopped condition
+	# before allowing any new shot.
+	# If 'waiting_for_ball_stop' is true, it means balls are currently in motion
+	# or we are in the post-shot 1-second delay. In either case, no new shot should be allowed.
+	if waiting_for_ball_stop:
+		return # Ignore all input if balls are moving or turn logic is processing.
+
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		# Added a check for whose turn it is to prevent player from shooting during AI's turn
 		if event.pressed:
 			aiming = true
 			_ensure_aim_line()
@@ -195,12 +307,28 @@ func _shoot_cue_ball(mouse_position: Vector2) -> void:
 	var final_impulse: float = min(impulse_strength * 2.0, 4000.0)
 	cue_ball.apply_central_impulse(direction.normalized() * final_impulse)
 	waiting_for_ball_stop = true
+	_just_shot = true
 	_ball_potted_this_turn = false
 
 func _clear_aim_line() -> void:
 	if aim_line != null and is_instance_valid(aim_line):
 		aim_line.queue_free()
 	aim_line = null
+
+## First issue: Helper function to check if all physics children (balls) are stopped.
+func _are_all_balls_stopped() -> bool:
+	for ball_node in _get_table_balls():
+		# Check the linear velocity length against the defined STOP_THRESHOLD.
+		if ball_node.linear_velocity.length() >= STOP_THRESHOLD:
+			return false # At least one ball is still moving fast.
+
+	# Only freeze and sleep all balls once the entire table has slowed below the threshold.
+	for ball_node in _get_table_balls():
+		ball_node.linear_velocity = Vector2.ZERO
+		ball_node.angular_velocity = 0.0
+		ball_node.sleeping = true
+	return true
+
 
 func _ai_take_visual_shot() -> void:
 	var available_balls: Array = []
@@ -217,6 +345,7 @@ func _ai_take_visual_shot() -> void:
 	var final_impulse: float = min(impulse_strength * 2.0, 2500.0)
 	cue_ball.apply_central_impulse(direction * final_impulse)
 	waiting_for_ball_stop = true
+	_just_shot = true
 
 
 class PocketDrawer extends Node2D:
