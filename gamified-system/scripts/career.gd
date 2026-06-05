@@ -23,14 +23,7 @@ func add_player_points(n: int) -> void:
 func add_ai_points(n: int) -> void:
 	ai_score += max(n, 0)
 
-func update_hud(xp_system: Node, player_score_value: int, ai_score_value: int) -> void:
-	var hud_layer: CanvasLayer = _ensure_hud_nodes()
-
-	var rank_label: Label = hud_layer.get_node_or_null("RankLabel")
-	var score_label: Label = hud_layer.get_node_or_null("ScoreLabel")
-	var xp_label: Label = hud_layer.get_node_or_null("XpLabel")
-	var xp_bar: ProgressBar = hud_layer.get_node_or_null("XpProgressBar")
-
+func update_hud(rank_label: Label, score_label: Label, xp_label: Label, xp_bar: ProgressBar, xp_system: Node, player_score_value: int, ai_score_value: int) -> void:
 	var rank_text: String = "Amateur I"
 	var total_xp: int = 0
 
@@ -42,9 +35,15 @@ func update_hud(xp_system: Node, player_score_value: int, ai_score_value: int) -
 
 	if rank_label != null:
 		rank_label.text = "Rank: " + rank_text
+		print(rank_label.text)
+	else:
+		print("HUD node not found")
 
 	if score_label != null:
 		score_label.text = "Player: " + str(player_score_value) + " — AI: " + str(ai_score_value)
+		print(score_label.text)
+	else:
+		print("HUD node not found")
 
 	if xp_label != null:
 		xp_label.text = "XP: " + str(total_xp)

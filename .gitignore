@@ -1,0 +1,13 @@
+.vscode/
+docs/
+*.sh
+*.md
+
+# Python caches
+**/__pycache__/
+**/*.pyc
+
+# Recommendation engine generated data and artifacts
+*.csv
+*.pkl
+*/models/

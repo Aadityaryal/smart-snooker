@@ -21,7 +21,7 @@ func _ready() -> void:
 
 	_confidence_label = Label.new()
 	_confidence_label.name = "ConfidenceLabel"
-	_confidence_label.position = Vector2(20.0, 20.0)
+	_confidence_label.position = Vector2(200, 80)
 	_hud_layer.add_child(_confidence_label)
 
 func apply_recommendation(recommended_shot: Dictionary) -> void:

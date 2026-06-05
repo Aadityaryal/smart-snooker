@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://bq5e6mdcuba4l"]
 
 [ext_resource type="Texture2D" uid="uid://chuutm185w3xq" path="res://resources/red_circle.svg" id="2"]
+[ext_resource type="PhysicsMaterial" uid="uid://ct0ghperonrar" path="res://ball.tres" id="2_5it3b"]
 [ext_resource type="Texture2D" uid="uid://crq16kq5xvm5b" path="res://resources/white_circle.svg" id="3"]
 [ext_resource type="Texture2D" uid="uid://dgmovvikqmlbf" path="res://resources/yellow_circle.svg" id="4"]
 [ext_resource type="Script" uid="uid://gxke32jhfb2w" path="res://scripts/table.gd" id="5"]
@@ -10,11 +11,15 @@
 [ext_resource type="Texture2D" uid="uid://cjc4wl2eyjiaa" path="res://resources/pink_circle.svg" id="9"]
 [ext_resource type="Texture2D" uid="uid://dfi2ycb7nhluv" path="res://resources/black_circle.svg" id="10"]
 
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_e1moh"]
+friction = 0.0
+bounce = 0.8
+
 [sub_resource type="RectangleShape2D" id="2"]
-size = Vector2(1280, 20)
+size = Vector2(1280, 50)
 
 [sub_resource type="RectangleShape2D" id="3"]
-size = Vector2(20, 720)
+size = Vector2(50, 720)
 
 [sub_resource type="CircleShape2D" id="1"]
 radius = 16.0
@@ -24,6 +29,7 @@ script = ExtResource("5")
 
 [node name="TopWall" type="StaticBody2D" parent="." unique_id=2000000001]
 position = Vector2(640, 0)
+physics_material_override = SubResource("PhysicsMaterial_e1moh")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TopWall" unique_id=2000000002]
 scale = Vector2(0.99999976, 0.99999976)
@@ -58,7 +64,9 @@ color = Color(0.101961, 0.419608, 0.164706, 1)
 [node name="ball_1" type="RigidBody2D" parent="." unique_id=242228292]
 position = Vector2(245, 360)
 scale = Vector2(0.09999999, 0.09999999)
+physics_material_override = ExtResource("2_5it3b")
 gravity_scale = 0.0
+continuous_cd = 2
 linear_damp = 5.0
 angular_damp = 5.0
 
@@ -71,6 +79,7 @@ shape = SubResource("1")
 [node name="ball_2" type="RigidBody2D" parent="." unique_id=669003171]
 position = Vector2(1070, 360)
 scale = Vector2(0.09999999, 0.09999999)
+physics_material_override = ExtResource("2_5it3b")
 gravity_scale = 0.0
 linear_damp = 5.0
 angular_damp = 5.0
@@ -84,6 +93,7 @@ shape = SubResource("1")
 [node name="ball_3" type="RigidBody2D" parent="." unique_id=2063176254]
 position = Vector2(1050.947, 349)
 scale = Vector2(0.09999999, 0.09999999)
+physics_material_override = ExtResource("2_5it3b")
 gravity_scale = 0.0
 linear_damp = 5.0
 angular_damp = 5.0
@@ -97,6 +107,7 @@ shape = SubResource("1")
 [node name="ball_4" type="RigidBody2D" parent="." unique_id=1470640152]
 position = Vector2(1050.947, 371)
 scale = Vector2(0.09999999, 0.09999999)
+physics_material_override = ExtResource("2_5it3b")
 gravity_scale = 0.0
 linear_damp = 5.0
 angular_damp = 5.0
@@ -110,6 +121,7 @@ shape = SubResource("1")
 [node name="ball_5" type="RigidBody2D" parent="." unique_id=72885539]
 position = Vector2(1031.895, 338)
 scale = Vector2(0.09999999, 0.09999999)
+physics_material_override = ExtResource("2_5it3b")
 gravity_scale = 0.0
 linear_damp = 5.0
 angular_damp = 5.0
@@ -123,6 +135,7 @@ shape = SubResource("1")
 [node name="ball_6" type="RigidBody2D" parent="." unique_id=1613016617]
 position = Vector2(1031.895, 360)
 scale = Vector2(0.09999999, 0.09999999)
+physics_material_override = ExtResource("2_5it3b")
 gravity_scale = 0.0
 linear_damp = 5.0
 angular_damp = 5.0
@@ -136,6 +149,7 @@ shape = SubResource("1")
 [node name="ball_7" type="RigidBody2D" parent="." unique_id=1988541090]
 position = Vector2(1031.895, 382)
 scale = Vector2(0.09999999, 0.09999999)
+physics_material_override = ExtResource("2_5it3b")
 gravity_scale = 0.0
 linear_damp = 5.0
 angular_damp = 5.0
@@ -149,6 +163,7 @@ shape = SubResource("1")
 [node name="ball_8" type="RigidBody2D" parent="." unique_id=668246567]
 position = Vector2(1012.842, 327)
 scale = Vector2(0.09999999, 0.09999999)
+physics_material_override = ExtResource("2_5it3b")
 gravity_scale = 0.0
 linear_damp = 5.0
 angular_damp = 5.0
@@ -162,6 +177,7 @@ shape = SubResource("1")
 [node name="ball_9" type="RigidBody2D" parent="." unique_id=1119977922]
 position = Vector2(1012.842, 349)
 scale = Vector2(0.09999999, 0.09999999)
+physics_material_override = ExtResource("2_5it3b")
 gravity_scale = 0.0
 linear_damp = 5.0
 angular_damp = 5.0
@@ -175,6 +191,7 @@ shape = SubResource("1")
 [node name="ball_10" type="RigidBody2D" parent="." unique_id=574805039]
 position = Vector2(1012.842, 371)
 scale = Vector2(0.09999999, 0.09999999)
+physics_material_override = ExtResource("2_5it3b")
 gravity_scale = 0.0
 linear_damp = 5.0
 angular_damp = 5.0
@@ -188,6 +205,7 @@ shape = SubResource("1")
 [node name="ball_11" type="RigidBody2D" parent="." unique_id=1155606878]
 position = Vector2(1012.842, 393)
 scale = Vector2(0.09999999, 0.09999999)
+physics_material_override = ExtResource("2_5it3b")
 gravity_scale = 0.0
 linear_damp = 5.0
 angular_damp = 5.0
@@ -201,6 +219,7 @@ shape = SubResource("1")
 [node name="ball_12" type="RigidBody2D" parent="." unique_id=1368306410]
 position = Vector2(993.79, 316)
 scale = Vector2(0.09999999, 0.09999999)
+physics_material_override = ExtResource("2_5it3b")
 gravity_scale = 0.0
 linear_damp = 5.0
 angular_damp = 5.0
@@ -214,6 +233,7 @@ shape = SubResource("1")
 [node name="ball_13" type="RigidBody2D" parent="." unique_id=1504277748]
 position = Vector2(993.79, 338)
 scale = Vector2(0.09999999, 0.09999999)
+physics_material_override = ExtResource("2_5it3b")
 gravity_scale = 0.0
 linear_damp = 5.0
 angular_damp = 5.0
@@ -227,6 +247,7 @@ shape = SubResource("1")
 [node name="ball_14" type="RigidBody2D" parent="." unique_id=284741090]
 position = Vector2(993.79, 360)
 scale = Vector2(0.09999999, 0.09999999)
+physics_material_override = ExtResource("2_5it3b")
 gravity_scale = 0.0
 linear_damp = 5.0
 angular_damp = 5.0
@@ -240,6 +261,7 @@ shape = SubResource("1")
 [node name="ball_15" type="RigidBody2D" parent="." unique_id=534680517]
 position = Vector2(993.79, 382)
 scale = Vector2(0.09999999, 0.09999999)
+physics_material_override = ExtResource("2_5it3b")
 gravity_scale = 0.0
 linear_damp = 5.0
 angular_damp = 5.0
@@ -253,6 +275,7 @@ shape = SubResource("1")
 [node name="ball_16" type="RigidBody2D" parent="." unique_id=712415759]
 position = Vector2(993.79, 404)
 scale = Vector2(0.09999999, 0.09999999)
+physics_material_override = ExtResource("2_5it3b")
 gravity_scale = 0.0
 linear_damp = 5.0
 angular_damp = 5.0
@@ -266,6 +289,7 @@ shape = SubResource("1")
 [node name="ball_17" type="RigidBody2D" parent="." unique_id=1249932204]
 position = Vector2(292, 435)
 scale = Vector2(0.09999999, 0.09999999)
+physics_material_override = ExtResource("2_5it3b")
 gravity_scale = 0.0
 linear_damp = 5.0
 angular_damp = 5.0
@@ -279,6 +303,7 @@ shape = SubResource("1")
 [node name="ball_18" type="RigidBody2D" parent="." unique_id=1286717773]
 position = Vector2(292, 285)
 scale = Vector2(0.09999999, 0.09999999)
+physics_material_override = ExtResource("2_5it3b")
 gravity_scale = 0.0
 linear_damp = 5.0
 angular_damp = 5.0
@@ -292,6 +317,7 @@ shape = SubResource("1")
 [node name="ball_19" type="RigidBody2D" parent="." unique_id=2000980504]
 position = Vector2(292, 360)
 scale = Vector2(0.09999999, 0.09999999)
+physics_material_override = ExtResource("2_5it3b")
 gravity_scale = 0.0
 linear_damp = 5.0
 angular_damp = 5.0
@@ -305,6 +331,7 @@ shape = SubResource("1")
 [node name="ball_20" type="RigidBody2D" parent="." unique_id=866195635]
 position = Vector2(640, 360)
 scale = Vector2(0.09999999, 0.09999999)
+physics_material_override = ExtResource("2_5it3b")
 gravity_scale = 0.0
 linear_damp = 5.0
 angular_damp = 5.0
@@ -318,6 +345,7 @@ shape = SubResource("1")
 [node name="ball_21" type="RigidBody2D" parent="." unique_id=1965301098]
 position = Vector2(870, 360)
 scale = Vector2(0.09999999, 0.09999999)
+physics_material_override = ExtResource("2_5it3b")
 gravity_scale = 0.0
 linear_damp = 5.0
 angular_damp = 5.0
@@ -331,6 +359,7 @@ shape = SubResource("1")
 [node name="ball_22" type="RigidBody2D" parent="." unique_id=2095167232]
 position = Vector2(1137, 359.00003)
 scale = Vector2(0.09999999, 0.09999999)
+physics_material_override = ExtResource("2_5it3b")
 gravity_scale = 0.0
 linear_damp = 5.0
 angular_damp = 5.0
