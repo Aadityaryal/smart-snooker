@@ -1,13 +1,35 @@
 .vscode/
 docs/
-*.sh
 *.md
+
+# Thesis documents, generated visuals, and temporary verification files
+/output/
+/thesis-assets/
+/tmp/
+/scripts/
+/files(5)/
+/files(6)/
+/gamified-system-(4.6)/
 
 # Python caches
 **/__pycache__/
 **/*.pyc
 
+# Local Python environments
+venv/
+.venv/
+
 # Recommendation engine generated data and artifacts
 *.csv
+*.jsonl
 *.pkl
 */models/
+all/
+bakup/
+
+# Training output and exported builds
+*.log
+*.zip
+recommendation-engine/logs/
+recommendation-engine/smart_snooker.x86_64/
+recommendation-engine/training12_analysis.html
