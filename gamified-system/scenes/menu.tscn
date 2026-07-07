@@ -40,10 +40,25 @@ text = "Career Match"
 layout_mode = 2
 text = "Shot Challenge"
 
+[node name="DrillsButton" type="Button" parent="CanvasLayer/Control/CenterContainer/VBoxContainer" unique_id=1062457961]
+layout_mode = 2
+text = "Drills"
+
+[node name="SandboxButton" type="Button" parent="CanvasLayer/Control/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Scenario Sandbox"
+
+[node name="SettingsButton" type="Button" parent="CanvasLayer/Control/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Settings"
+
 [node name="QuitButton" type="Button" parent="CanvasLayer/Control/CenterContainer/VBoxContainer" unique_id=1850638486]
 layout_mode = 2
 text = "Quit"
 
 [connection signal="pressed" from="CanvasLayer/Control/CenterContainer/VBoxContainer/CareerMatchButton" to="." method="_on_career_match_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/CenterContainer/VBoxContainer/ShotChallengeButton" to="." method="_on_shot_challenge_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/CenterContainer/VBoxContainer/DrillsButton" to="." method="_on_drills_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/CenterContainer/VBoxContainer/SandboxButton" to="." method="_on_sandbox_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/CenterContainer/VBoxContainer/SettingsButton" to="." method="_on_settings_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/CenterContainer/VBoxContainer/QuitButton" to="." method="_on_quit_pressed"]
