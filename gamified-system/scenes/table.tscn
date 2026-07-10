@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://dfip2kvesdr1l" path="res://resources/blue_circle.svg" id="8"]
 [ext_resource type="Texture2D" uid="uid://cjc4wl2eyjiaa" path="res://resources/pink_circle.svg" id="9"]
 [ext_resource type="Texture2D" uid="uid://dfi2ycb7nhluv" path="res://resources/black_circle.svg" id="10"]
+[ext_resource type="Script" uid="uid://7161ugpf1wer" path="res://addons/godot_rl_agents/sync.gd" id="11_g0e7t"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_e1moh"]
 friction = 0.0
@@ -67,6 +68,8 @@ scale = Vector2(0.09999999, 0.09999999)
 physics_material_override = ExtResource("2_5it3b")
 gravity_scale = 0.0
 continuous_cd = 2
+contact_monitor = true
+max_contacts_reported = 4
 linear_damp = 5.0
 angular_damp = 5.0
 
@@ -77,7 +80,7 @@ texture = ExtResource("3")
 shape = SubResource("1")
 
 [node name="ball_2" type="RigidBody2D" parent="." unique_id=669003171]
-position = Vector2(1070, 360)
+position = Vector2(1108, 360)
 scale = Vector2(0.09999999, 0.09999999)
 physics_material_override = ExtResource("2_5it3b")
 gravity_scale = 0.0
@@ -91,7 +94,7 @@ texture = ExtResource("2")
 shape = SubResource("1")
 
 [node name="ball_3" type="RigidBody2D" parent="." unique_id=2063176254]
-position = Vector2(1050.947, 349)
+position = Vector2(1066, 337)
 scale = Vector2(0.09999999, 0.09999999)
 physics_material_override = ExtResource("2_5it3b")
 gravity_scale = 0.0
@@ -105,7 +108,7 @@ texture = ExtResource("2")
 shape = SubResource("1")
 
 [node name="ball_4" type="RigidBody2D" parent="." unique_id=1470640152]
-position = Vector2(1050.947, 371)
+position = Vector2(1066, 383)
 scale = Vector2(0.09999999, 0.09999999)
 physics_material_override = ExtResource("2_5it3b")
 gravity_scale = 0.0
@@ -119,7 +122,7 @@ texture = ExtResource("2")
 shape = SubResource("1")
 
 [node name="ball_5" type="RigidBody2D" parent="." unique_id=72885539]
-position = Vector2(1031.895, 338)
+position = Vector2(1024, 314)
 scale = Vector2(0.09999999, 0.09999999)
 physics_material_override = ExtResource("2_5it3b")
 gravity_scale = 0.0
@@ -133,7 +136,7 @@ texture = ExtResource("2")
 shape = SubResource("1")
 
 [node name="ball_6" type="RigidBody2D" parent="." unique_id=1613016617]
-position = Vector2(1031.895, 360)
+position = Vector2(1024, 360)
 scale = Vector2(0.09999999, 0.09999999)
 physics_material_override = ExtResource("2_5it3b")
 gravity_scale = 0.0
@@ -147,7 +150,7 @@ texture = ExtResource("2")
 shape = SubResource("1")
 
 [node name="ball_7" type="RigidBody2D" parent="." unique_id=1988541090]
-position = Vector2(1031.895, 382)
+position = Vector2(1024, 406)
 scale = Vector2(0.09999999, 0.09999999)
 physics_material_override = ExtResource("2_5it3b")
 gravity_scale = 0.0
@@ -161,7 +164,7 @@ texture = ExtResource("2")
 shape = SubResource("1")
 
 [node name="ball_8" type="RigidBody2D" parent="." unique_id=668246567]
-position = Vector2(1012.842, 327)
+position = Vector2(982, 291)
 scale = Vector2(0.09999999, 0.09999999)
 physics_material_override = ExtResource("2_5it3b")
 gravity_scale = 0.0
@@ -175,7 +178,7 @@ texture = ExtResource("2")
 shape = SubResource("1")
 
 [node name="ball_9" type="RigidBody2D" parent="." unique_id=1119977922]
-position = Vector2(1012.842, 349)
+position = Vector2(982, 337)
 scale = Vector2(0.09999999, 0.09999999)
 physics_material_override = ExtResource("2_5it3b")
 gravity_scale = 0.0
@@ -189,7 +192,7 @@ texture = ExtResource("2")
 shape = SubResource("1")
 
 [node name="ball_10" type="RigidBody2D" parent="." unique_id=574805039]
-position = Vector2(1012.842, 371)
+position = Vector2(982, 383)
 scale = Vector2(0.09999999, 0.09999999)
 physics_material_override = ExtResource("2_5it3b")
 gravity_scale = 0.0
@@ -203,7 +206,7 @@ texture = ExtResource("2")
 shape = SubResource("1")
 
 [node name="ball_11" type="RigidBody2D" parent="." unique_id=1155606878]
-position = Vector2(1012.842, 393)
+position = Vector2(982, 429)
 scale = Vector2(0.09999999, 0.09999999)
 physics_material_override = ExtResource("2_5it3b")
 gravity_scale = 0.0
@@ -217,7 +220,7 @@ texture = ExtResource("2")
 shape = SubResource("1")
 
 [node name="ball_12" type="RigidBody2D" parent="." unique_id=1368306410]
-position = Vector2(993.79, 316)
+position = Vector2(940, 268)
 scale = Vector2(0.09999999, 0.09999999)
 physics_material_override = ExtResource("2_5it3b")
 gravity_scale = 0.0
@@ -231,7 +234,7 @@ texture = ExtResource("2")
 shape = SubResource("1")
 
 [node name="ball_13" type="RigidBody2D" parent="." unique_id=1504277748]
-position = Vector2(993.79, 338)
+position = Vector2(940, 314)
 scale = Vector2(0.09999999, 0.09999999)
 physics_material_override = ExtResource("2_5it3b")
 gravity_scale = 0.0
@@ -245,7 +248,7 @@ texture = ExtResource("2")
 shape = SubResource("1")
 
 [node name="ball_14" type="RigidBody2D" parent="." unique_id=284741090]
-position = Vector2(993.79, 360)
+position = Vector2(940, 360)
 scale = Vector2(0.09999999, 0.09999999)
 physics_material_override = ExtResource("2_5it3b")
 gravity_scale = 0.0
@@ -259,7 +262,7 @@ texture = ExtResource("2")
 shape = SubResource("1")
 
 [node name="ball_15" type="RigidBody2D" parent="." unique_id=534680517]
-position = Vector2(993.79, 382)
+position = Vector2(940, 406)
 scale = Vector2(0.09999999, 0.09999999)
 physics_material_override = ExtResource("2_5it3b")
 gravity_scale = 0.0
@@ -273,7 +276,7 @@ texture = ExtResource("2")
 shape = SubResource("1")
 
 [node name="ball_16" type="RigidBody2D" parent="." unique_id=712415759]
-position = Vector2(993.79, 404)
+position = Vector2(940, 452)
 scale = Vector2(0.09999999, 0.09999999)
 physics_material_override = ExtResource("2_5it3b")
 gravity_scale = 0.0
@@ -357,7 +360,7 @@ texture = ExtResource("9")
 shape = SubResource("1")
 
 [node name="ball_22" type="RigidBody2D" parent="." unique_id=2095167232]
-position = Vector2(1137, 359.00003)
+position = Vector2(1180, 360)
 scale = Vector2(0.09999999, 0.09999999)
 physics_material_override = ExtResource("2_5it3b")
 gravity_scale = 0.0
@@ -379,3 +382,9 @@ shape = SubResource("1")
 [node name="ConfidenceLabel" type="Label" parent="HUD" unique_id=308227449]
 offset_right = 40.0
 offset_bottom = 23.0
+
+[node name="Sync" type="Node" parent="." unique_id=1574126069]
+script = ExtResource("11_g0e7t")
+action_repeat = 240
+speed_up = 16.0
+metadata/_custom_type_script = "uid://7161ugpf1wer"
