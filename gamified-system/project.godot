@@ -12,23 +12,32 @@ config_version=5
 
 config/name="gamified-system"
 run/main_scene="res://scenes/menu.tscn"
-config/features=PackedStringArray("4.6", "GL Compatibility")
+config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [autoload]
 
 XpSystem="*uid://d23wmel14ruk5"
+Globals="*uid://b700wd6lbo8xl"
 
 [display]
 
 window/size/viewport_width=1280
-window/size/viewport_height=720
+window/size/viewport_height=940
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/godot_rl_agents/plugin.cfg")
+
+[gui]
+
+theme/custom="res://ui_theme.tres"
 
 [physics]
 
-common/physics_ticks_per_second=60
-common/max_physics_steps_per_frame=8
-2d/run_on_separate_thread=false
+common/physics_ticks_per_second=120
 3d/physics_engine="Jolt Physics"
 
 [rendering]
